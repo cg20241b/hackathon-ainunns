@@ -38,6 +38,7 @@ const fragmentShader = `
 export default function GlowingCube() {
   const lightPosition = new THREE.Vector3(0, 0, 0);
   const viewPosition = new THREE.Vector3(0, 0, 5);
+  const meshRef = React.useRef<THREE.Mesh>(null);
 
   const glowMaterial = React.useMemo(() => {
     return new THREE.ShaderMaterial({
@@ -52,9 +53,31 @@ export default function GlowingCube() {
     });
   }, []);
 
+  React.useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (meshRef.current) {
+        switch (event.key) {
+          case 'w':
+          case 'W':
+            meshRef.current.position.y += 0.1;
+            break;
+          case 's':
+          case 'S':
+            meshRef.current.position.y -= 0.1;
+            break;
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   return (
     <>
-      <mesh position={[0, 0, 0]} scale={[0.75, 0.75, 0.75]}>
+      <mesh ref={meshRef} position={[0, 0, 0]}>
         <boxGeometry args={[1, 1, 1]} />
         <primitive object={glowMaterial} attach='material' />
       </mesh>
