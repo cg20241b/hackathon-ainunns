@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as THREE from 'three';
 
+export const cubePosition = new THREE.Vector3(0, 0, 0);
+
 const vertexShader = `
   varying vec3 vNormal;
   varying vec3 vPosition;
@@ -12,32 +14,18 @@ const vertexShader = `
 `;
 
 const fragmentShader = `
-  uniform vec3 lightPosition;
-  uniform vec3 viewPosition;
   uniform vec3 color;
   varying vec3 vNormal;
   varying vec3 vPosition;
 
   void main() {
     vec3 normal = normalize(vNormal);
-    vec3 lightDir = normalize(lightPosition - vPosition);
-    vec3 viewDir = normalize(viewPosition - vPosition);
-
-    // Diffuse
-    float diff = max(dot(normal, lightDir), 0.0);
-
-    // Specular
-    vec3 halfDir = normalize(lightDir + viewDir);
-    float spec = pow(max(dot(normal, halfDir), 0.0), 64.0); // Higher shininess for metallic look
-
-    vec3 result = (0.1 + diff + spec) * color; // Ambient + Diffuse + Specular
-    gl_FragColor = vec4(result, 1.0);
+    vec3 glow = color * 3.0; // Increase the intensity to simulate glow
+    gl_FragColor = vec4(glow, 1.0);
   }
 `;
 
 export default function GlowingCube() {
-  const lightPosition = new THREE.Vector3(0, 0, 0);
-  const viewPosition = new THREE.Vector3(0, 0, 5);
   const meshRef = React.useRef<THREE.Mesh>(null);
 
   const glowMaterial = React.useMemo(() => {
@@ -45,11 +33,11 @@ export default function GlowingCube() {
       vertexShader,
       fragmentShader,
       uniforms: {
-        lightPosition: { value: lightPosition },
-        viewPosition: { value: viewPosition },
         color: { value: new THREE.Color(0xffffff) },
       },
       side: THREE.FrontSide,
+      transparent: true,
+      blending: THREE.AdditiveBlending, // Additive blending for glow effect
     });
   }, []);
 
@@ -66,6 +54,7 @@ export default function GlowingCube() {
             meshRef.current.position.y -= 0.1;
             break;
         }
+        cubePosition.copy(meshRef.current.position);
       }
     };
 
@@ -77,11 +66,11 @@ export default function GlowingCube() {
 
   return (
     <>
-      <mesh ref={meshRef} position={[0, 0, 0]}>
+      <mesh ref={meshRef} position={cubePosition} scale={[0.5, 0.5, 0.5]}>
         <boxGeometry args={[1, 1, 1]} />
         <primitive object={glowMaterial} attach='material' />
       </mesh>
-      <pointLight position={[0, 0, 0]} intensity={2} />
+      <pointLight position={cubePosition} intensity={2} />
     </>
   );
 }
