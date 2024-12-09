@@ -18,9 +18,16 @@ const App = () => {
         text='N'
         color='#87CEEB'
         type='alphabet'
+        ambientIntensity={ambientIntensity}
       />
       <GlowingCube />
-      <TextMesh position={[2.5, 0, 0]} text='3' color='#FC976C' type='digit' />
+      <TextMesh
+        position={[2.5, 0, 0]}
+        text='3'
+        color='#FC976C'
+        type='digit'
+        ambientIntensity={ambientIntensity}
+      />
       <CameraControls />
     </Canvas>
   );

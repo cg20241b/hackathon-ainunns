@@ -9,6 +9,7 @@ interface TextMeshProps {
   text: string;
   color: string;
   type: 'alphabet' | 'digit';
+  ambientIntensity: number;
 }
 
 const alphabetVertexShader = `
@@ -96,6 +97,7 @@ export default function TextMesh({
   text,
   color,
   type,
+  ambientIntensity,
 }: TextMeshProps) {
   const font = useLoader(
     FontLoader,
@@ -111,7 +113,6 @@ export default function TextMesh({
 
   const lightPosition = new THREE.Vector3(0, 0, 0);
   const viewPosition = new THREE.Vector3(0, 0, 5);
-  const ambientIntensity = 0.323; // Replace with your calculated ambient intensity
 
   const shaderMaterial = React.useMemo(() => {
     const vertexShader =
