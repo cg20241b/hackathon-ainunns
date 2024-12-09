@@ -1,48 +1,64 @@
 import * as React from 'react';
 import * as THREE from 'three';
 
+const vertexShader = `
+  varying vec3 vNormal;
+  varying vec3 vPosition;
+  void main() {
+    vNormal = normalize(normalMatrix * normal);
+    vPosition = vec3(modelViewMatrix * vec4(position, 1.0));
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+
+const fragmentShader = `
+  uniform vec3 lightPosition;
+  uniform vec3 viewPosition;
+  uniform vec3 color;
+  varying vec3 vNormal;
+  varying vec3 vPosition;
+
+  void main() {
+    vec3 normal = normalize(vNormal);
+    vec3 lightDir = normalize(lightPosition - vPosition);
+    vec3 viewDir = normalize(viewPosition - vPosition);
+
+    // Diffuse
+    float diff = max(dot(normal, lightDir), 0.0);
+
+    // Specular
+    vec3 halfDir = normalize(lightDir + viewDir);
+    float spec = pow(max(dot(normal, halfDir), 0.0), 64.0); // Higher shininess for metallic look
+
+    vec3 result = (0.1 + diff + spec) * color; // Ambient + Diffuse + Specular
+    gl_FragColor = vec4(result, 1.0);
+  }
+`;
+
 export default function GlowingCube() {
+  const lightPosition = new THREE.Vector3(0, 0, 0);
+  const viewPosition = new THREE.Vector3(0, 0, 5);
+
   const glowMaterial = React.useMemo(() => {
     return new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
       uniforms: {
-        color: { value: new THREE.Vector3(1, 1, 1) },
-        opacity: { value: 1 },
+        lightPosition: { value: lightPosition },
+        viewPosition: { value: viewPosition },
+        color: { value: new THREE.Color(0xffffff) },
       },
-      vertexShader: `
-        varying vec3 vPosition;
-        void main() {
-          vPosition = position;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      fragmentShader: `
-        uniform vec3 color;
-        uniform float opacity;
-        varying vec3 vPosition;
-        void main() {
-          gl_FragColor = vec4(color, opacity);
-        }
-      `,
-      transparent: true,
-      depthWrite: false,
-      blending: 1,
+      side: THREE.FrontSide,
     });
   }, []);
 
   return (
     <>
-      <mesh position={[0, 0, 0]} scale={[0.5, 0.5, 0.5]}>
+      <mesh position={[0, 0, 0]} scale={[0.75, 0.75, 0.75]}>
         <boxGeometry args={[1, 1, 1]} />
         <primitive object={glowMaterial} attach='material' />
       </mesh>
-
-      <pointLight
-        position={[0, 0, 0]}
-        intensity={2}
-        color='white'
-        distance={5}
-        decay={2}
-      />
+      <pointLight position={[0, 0, 0]} intensity={2} />
     </>
   );
 }
