@@ -5,9 +5,10 @@ import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 interface TextMeshProps {
   position: [number, number, number];
   text: string;
+  color: string;
 }
 
-export default function TextMesh({ position, text }: TextMeshProps) {
+export default function TextMesh({ position, text, color }: TextMeshProps) {
   const font = useLoader(
     FontLoader,
     'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json',
@@ -22,7 +23,7 @@ export default function TextMesh({ position, text }: TextMeshProps) {
 
   return (
     <mesh position={position} geometry={textGeometry}>
-      <meshStandardMaterial color='black' />
+      <meshStandardMaterial color={color} />
     </mesh>
   );
 }

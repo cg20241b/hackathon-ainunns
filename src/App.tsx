@@ -7,8 +7,8 @@ const App = () => {
     <Canvas>
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} />
-      <TextMesh position={[-2, 0, 0]} text='N' />
-      <TextMesh position={[2, 0, 0]} text='3' />
+      <TextMesh position={[-2, 0, 0]} text='N' color='#87CEEB' />
+      <TextMesh position={[2, 0, 0]} text='3' color='#FC976C' />
     </Canvas>
   );
 };
