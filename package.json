@@ -1,0 +1,65 @@
+{
+  "name": "hackathon-ainunns",
+  "version": "1.0.0",
+  "description": "Three.js Shader Hackathon Project",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "format": "prettier --write . && eslint . --fix && pnpm typecheck",
+    "format:check": "prettier --check .",
+    "format:write": "prettier --write .",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit --jsx react-jsx"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cg20241b/hackathon-ainunns.git"
+  },
+  "author": "Ainun Nadhifah Syamsiyah",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cg20241b/hackathon-ainunns/issues"
+  },
+  "homepage": "https://github.com/cg20241b/hackathon-ainunns#readme",
+  "dependencies": {
+    "@react-three/drei": "^9.117.3",
+    "@react-three/fiber": "^8.17.10",
+    "@react-three/postprocessing": "^2.16.3",
+    "postprocessing": "^6.36.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "read-pkg-up": "^10.1.0",
+    "three": "^0.170.0",
+    "three-stdlib": "^2.34.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.4",
+    "@commitlint/config-conventional": "^18.4.4",
+    "@eslint/compat": "^1.2.3",
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.15.0",
+    "@types/react": "^18.3.14",
+    "@types/react-dom": "^18.3.2",
+    "@types/three": "^0.170.0",
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/parser": "^6.18.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.2",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.14",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "eslint-plugin-unused-imports": "^3.0.0",
+    "globals": "^15.12.0",
+    "prettier": "3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.9",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.11.0",
+    "vite": "^5.4.10"
+  }
+}
