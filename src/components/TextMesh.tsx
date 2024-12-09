@@ -104,7 +104,7 @@ export default function TextMesh({
   const textOptions = {
     font,
     size: 1,
-    height: 0.2,
+    depth: 0.2,
   };
 
   const textGeometry = new TextGeometry(text, textOptions);

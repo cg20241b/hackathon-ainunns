@@ -1,5 +1,6 @@
 import { Canvas } from '@react-three/fiber';
 
+import CameraControls from './components/CameraControls';
 import GlowingCube from './components/GlowingCube';
 import TextMesh from './components/TextMesh';
 
@@ -20,6 +21,7 @@ const App = () => {
       />
       <GlowingCube />
       <TextMesh position={[2.5, 0, 0]} text='3' color='#FC976C' type='digit' />
+      <CameraControls />
     </Canvas>
   );
 };
